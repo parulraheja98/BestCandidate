@@ -2,6 +2,7 @@ from flask import Flask
 from flask_restful import Api
 from resources.user import UserRegister
 from resources.user import UserLogin
+from resources.skills import SkillFinder
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -17,6 +18,7 @@ def create_tables():
 
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserLogin, '/login')
+api.add_resource(SkillFinder,'/skill')
 from db import db
 db.init_app(app)
 if __name__ == '__main__':
