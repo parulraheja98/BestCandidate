@@ -1,8 +1,9 @@
 from flask import Flask
 from flask_restful import Api
-from resources.user import UserRegister
-from resources.user import UserLogin
+from flask_jwt_extended import JWTManager
+from resources.user import UserRegister,UserLogin
 from resources.skills import SkillFinder
+from models.user import UserModel
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
@@ -14,6 +15,16 @@ api = Api(app)
 @app.before_first_request
 def create_tables():
     db.create_all()
+
+jwt = JWTManager(app)
+
+@jwt.user_claims_loader
+def add_claims_to_jwt(identity):
+    admin_user = UserModel.find_by_role('admin').json()['id']
+    if identity == admin_user:
+        return {'is_admin': True}
+    else:
+        return {'is_admin': False}
 
 
 api.add_resource(UserRegister, '/register')

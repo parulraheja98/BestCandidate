@@ -1,5 +1,6 @@
 import hashlib
 from flask_restful import Resource, reqparse
+from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_claims
 from models.user import UserModel
 
 
@@ -15,6 +16,11 @@ class UserRegister(Resource):
                         required=True,
                         help="This field cannot be blank."
                         )
+    parser.add_argument('role',
+                        type=str,
+                        required=True,
+                        help="This field cannot be blank."
+                        )
 
 
 
@@ -24,9 +30,9 @@ class UserRegister(Resource):
         if UserModel.find_by_username(data['username']):
             return {"message": "A user with that username already exists"}, 400
 
-
+        print(data)
         enc_password = hashlib.md5(data['password'].encode())
-        user = UserModel(data['username'], enc_password.hexdigest())
+        user = UserModel(data['username'], enc_password.hexdigest(),  data['role'])
         user.save_to_db()
 
         return {"message": "User created successfully."}, 201
@@ -47,16 +53,36 @@ class UserLogin(Resource):
         required=True,
         help="This field cannot be blank"
     )
+
+    @jwt_required
+    def get(self):
+        claims = get_jwt_claims()
+        print('checking claim 1')
+        print(claims)
+        print('checking claim 2')
+        return {
+            'message': 'success'
+        }
+
     
     def post(self):
         data = UserLogin.parser.parse_args()
         user_exist = UserModel.find_by_username(data['username'])
+        print(user_exist.json()['id'])
+        user_id = user_exist.json()['id']
         if user_exist:
-            password = user_exist.json()['password']
-            
+            password = user_exist.json()['password']  
+            print(password)
             enc_password = hashlib.md5(data['password'].encode())
             if password == enc_password.hexdigest():
-                return "Success", 200
+                access_token = create_access_token(identity=user_id, fresh=True)
+                refresh_token = create_refresh_token(user_id)
+                return {
+                    'access_token': access_token,
+                    'refresh_token': refresh_token
+                }, 200
+
+    
             else:
                 return "Unsuccesfull",403
         else:
