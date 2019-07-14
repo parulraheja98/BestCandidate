@@ -31,11 +31,16 @@ jwt = JWTManager(app)
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
-    admin_user = UserModel.find_by_role('admin').json()['id']
-    if identity == admin_user:
-        return {'is_admin': True}
+    admin_user = UserModel.find_by_role('admin')
+    if admin_user != None:
+        if identity == admin_user['json']['id']:
+            return {'is_admin': True}
+        else:
+            return {'is_admin': False}
     else:
-        return {'is_admin': False}
+        return {
+            'is_admin': False
+        }
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
