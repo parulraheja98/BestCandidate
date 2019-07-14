@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import {Form, Button, Alert} from 'react-bootstrap'
+import {withCookies, Cookies} from 'react-cookie';
 
 export class Login extends Component {
 
@@ -9,7 +10,7 @@ export class Login extends Component {
         const { cookies } = props;
         this.state = {loggedIn: false, username: '', password: '', invalidCredentials: false};
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleEmailInput = this.handleEmailInput.bind(this);
+        this.handleUsername = this.handleUsername.bind(this);
         this.handlePasswordInput = this.handlePasswordInput.bind(this);
     }
 
@@ -31,10 +32,10 @@ export class Login extends Component {
         console.log('received response');
         if(data.access_token) {
             this.setState({invalidCredentials:false});
-            cookies.set('accessToken',data.access_token,{path:'/'}); //store the received tokens
-            cookies.set('refreshToken', data.refresh_token, {path: '/'});
+            cookies.set('access_token',data.access_token,{path:'/'}); //store the received tokens
+            cookies.set('refresh_token', data.refresh_token, {path: '/'});
             this.setState({loggedIn:true});
-            this.props.history.push('/');
+            //this.props.history.push('/');
         }else {
             this.setState({invalidCredentials:true}); //show the notification that says invalid password
         }
@@ -42,47 +43,52 @@ export class Login extends Component {
         
     }
 
-    handleEmailInput(event){
+    handleUsername(event){
         event.preventDefault();
         this.setState({username : event.target.value});
-        console.log(event.target.value);
     }
 
     handlePasswordInput(event){
         event.preventDefault();
-        this.setState({username : event.target.value});
-        console.log("Something going in the password");
+        this.setState({password : event.target.value});
     }
 
 
     render() {
         return (
             <div style={this.getLoginDivStyle()}>
-                <h2>Login</h2> 
+                <h2>Welcome back</h2> 
                 <br/>
                <Form style={this.getFormStyle()}>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Control type="email" onClick={this.handleEmailInput} placeholder="Email"/>
-                        <Form.Text className="text-muted"> We'll never share your email with anyone else. </Form.Text>
+                    <Form.Group controlId="username">
+                        <Form.Control type='text' placeholder='Enter username' onChange={this.handleUsername} required/>
                     </Form.Group>
                     <Form.Group controlId="formBasicPassword">
-                        <Form.Control type="password" onClick={this.handlePasswordInput} placeholder="Password" />
+                        <Form.Control type="password" onClick={this.handlePasswordInput} placeholder="Password" required/>
                     </Form.Group>
                     <br/>
-                    <Button variant="primary"  onClick={this.handleSubmit} type="submit">Submit</Button>
+                    <Button variant="primary"  onClick={this.handleSubmit} type="submit">Log in</Button>
                 </Form>
                 {
                 this.state.invalidCredentials ?
-                <Alert variant='danger'> Invalid Login Credentials </Alert>
+                <Alert style={this.getAlertStyle()} variant='danger'>Failed to log in</Alert>
                 :null
                 }
                 {
                 this.state.loggedIn ?
-                <Alert variant='success'> You are logged in </Alert>
+                <Alert variant='success'>You are logged in</Alert>
                 :null
                 }
             </div>
         )
+    }
+
+    getAlertStyle = () => {
+        return {
+            margin: "auto",
+            width: "50%",
+            textAlign: "centered"
+        }
     }
 
 
@@ -105,4 +111,4 @@ export class Login extends Component {
     }
 }
 
-export default Login
+export default withCookies(Login)

@@ -12,12 +12,14 @@ export class Register extends Component {
             confPassword:'',
             email:'',
             credentialsMatch:true,
-            role: ''
+            role: '',
+            successsfulRegistration: true
         };
+
+        this.handleRePassword = this.handleRePassword.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleUsername = this.handleUsername.bind(this);
         this.handlePassword = this.handlePassword.bind(this);
-        this.handleRePassword = this.handleRePassword.bind(this);
         this.handleEmail = this.handleEmail.bind(this);
         this.handleRole = this.handleRole.bind(this);
     }
@@ -51,35 +53,40 @@ export class Register extends Component {
     handleSubmit(event) {
 
         event.preventDefault();
-        console.log('checking username');
-        console.log(this.state.username);
-        console.log('checking usrname 1');
         
+
+        if(this.state.password === this.state.confPassword){
+            console.log("Passwords match");
+
             var registerCredentials = JSON.stringify({
                 username:this.state.username,
                 password:this.state.password,
-                role:this.state.role
+                role:"recruiter"
             })
-        
-    
-        fetch('http://localhost:5000/register' , {
-        method:'POST',
-        credentials:'include',
-        headers:{'Content-Type':'application/json'},
-        body:registerCredentials
-        })
-        .then(response => response.json())
-        .then(data => {
-        console.log('received response');
-        console.log(data);
-        if(data.authorized) {
-            // is authorized defined?
-        }
-        else {
-            this.setState({credentialsMatch:false});       
-        } 
-        
-        })
+
+            fetch('http://localhost:5000/register' , {
+            method:'POST',
+            credentials:'include',
+            headers:{'Content-Type':'application/json'},
+            body:registerCredentials
+            })
+            .then(response => response.json())
+            .then(response => {
+            console.log('received response');
+            console.log(response);
+            if(response.ok) {
+                console.log("Successful registration");
+                this.setState({successsfulRegistration: true});
+            }else {
+                this.setState({credentialsMatch:false});    
+                this.setState({successsfulRegistration: false})   
+            } 
+            
+            })
+        }else{
+            console.log(this.state.password+" match "+this.state.confPassword);
+            console.log("Passwords do not match");
+        }    
         
     }
     
@@ -93,10 +100,6 @@ export class Register extends Component {
                 <h2>Create an account</h2> 
                 <br/>
                <Form style={this.getFormStyle()}>
-                    <Form.Group controlId="formBasicEmail">
-                        <Form.Control type="email" onClick={this.handleEmail} placeholder="Email" required/>
-                        <Form.Text className="text-muted"> We'll never share your email with anyone else. </Form.Text>
-                    </Form.Group>
                     <Form.Control type='text' placeholder='Enter username' onChange={this.handleUsername} required/>
                     <Form.Group controlId="formBasicPassword">
                         <Form.Control type="password" onClick={this.handlePassword} placeholder="Password" required/>
@@ -111,7 +114,7 @@ export class Register extends Component {
                     
                     <br/>
                     <br/>
-                    <Button variant="primary"  onClick={this.handleSubmit} type="submit">Submit</Button>
+                    <Button variant="primary"  onClick={this.handleSubmit} type="submit">Register</Button>
                 </Form>
             </div>
             
