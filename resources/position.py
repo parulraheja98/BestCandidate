@@ -8,6 +8,15 @@ class Position(Resource):
         position = PositionModel.find_by_id(id).json()
         print(position)
 
+class PositionByCandidate(Resource):
+    def get(self, id):
+        position = PositionModel.find_by_candidate(id)
+        pos_list_id = []
+        for pos in position:
+            print(pos.json())
+
+        return position
+
 class CreatePosition(Resource):
     def post(self):
         parser = reqparse.RequestParser()
