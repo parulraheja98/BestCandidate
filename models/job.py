@@ -1,5 +1,5 @@
 from db import db
-from models.position import PositionModel
+from models.application import ApplicationModel
 
 class JobModel(db.Model):
     __tablename__ = 'jobs'
@@ -7,7 +7,7 @@ class JobModel(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     description = db.Column(db.String(80))
     posted_by = db.Column(db.String(80))
-    position = db.relationship('PositionModel', backref='jobmodel', lazy=True)
+    position = db.relationship('ApplicationModel', backref='jobmodel', lazy=True)
 
 
     def __init__(self, description, posted_by):

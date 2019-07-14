@@ -8,7 +8,7 @@ class UserModel(db.Model):
     username = db.Column(db.String(80))
     password = db.Column(db.String(80))
     role = db.Column(db.String(80))
-    position = db.relationship('PositionModel', backref='usermodel', lazy=True) 
+    application = db.relationship('ApplicationModel', backref='usermodel', lazy=True) 
 
     def __init__(self, username, password, role):
         self.username = username
@@ -17,9 +17,10 @@ class UserModel(db.Model):
 
     def json(self):
         return {
-            'username': self.username,
             'id': self.id,
-            'password': self.password
+            'username': self.username,
+            'password': self.password,
+            'role': self.role
         }
 
     def save_to_db(self):
