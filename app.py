@@ -31,7 +31,7 @@ jwt = JWTManager(app)
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
-
+    print('complete')
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
     return decrypted_token['jti'] in BLACKLIST
