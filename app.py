@@ -1,8 +1,10 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from resources.user import UserRegister,UserLogin, UserLogout, CreatePosition, CreateJob, FindJob
+from resources.user import UserRegister,UserLogin, UserLogout
 from resources.skills import SkillFinder
+from resources.job import Job, CreateJob
+from resources.position import Position, CreatePosition
 from models.user import UserModel
 from blacklist import BLACKLIST
 
@@ -68,9 +70,10 @@ api.add_resource(UserRegister, '/register')
 api.add_resource(UserLogin, '/login')
 api.add_resource(SkillFinder, '/skill')
 api.add_resource(UserLogout, '/logout')
-api.add_resource(CreatePosition, '/createposition')
 api.add_resource(CreateJob, '/createjob')
-api.add_resource(FindJob, '/findjob')
+api.add_resource(Job, '/job/<int:id>')
+api.add_resource(CreatePosition, '/createposition')
+api.add_resource(Position, '/position/<int:id>')
 
 from db import db
 db.init_app(app)

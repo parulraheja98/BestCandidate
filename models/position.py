@@ -6,15 +6,18 @@ class PositionModel(db.Model):
     id = db.Column(db.Integer, primary_key = True)
     name = db.Column(db.String(80))
     jobs = db.Column(db.Integer, db.ForeignKey('jobs.id'), nullable=False)
+    candidate = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
    
-    def __init__(self, name, jobs):
+    def __init__(self, name, jobs, candidate):
         self.name = name
         self.jobs = jobs
+        self.candidate = candidate
 
     def json(self):
         return {
             'name': self.name,
-            'jobs': self.jobs
+            'jobs': self.jobs,
+            'candidate': self.candidate
         }
 
     def save_to_db(self):
