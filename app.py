@@ -1,7 +1,7 @@
 from flask import Flask, jsonify
 from flask_restful import Api
 from flask_jwt_extended import JWTManager
-from resources.user import UserRegister,UserLogin, UserLogout
+from resources.user import UserRegister,UserLogin, UserLogout, CreatePosition, CreateJob, FindJob
 from resources.skills import SkillFinder
 from models.user import UserModel
 from blacklist import BLACKLIST
@@ -14,6 +14,8 @@ app.config['JWT_BLACKLIST_ENABLED'] = True
 app.config['JWT_BLACKLIST_TOKEN_CHECKS'] = ['access', 'refresh']
 app.secret_key = 'praheja'
 api = Api(app)
+
+
 
 @app.before_first_request
 def create_tables():
@@ -66,6 +68,9 @@ api.add_resource(UserRegister, '/register')
 api.add_resource(UserLogin, '/login')
 api.add_resource(SkillFinder, '/skill')
 api.add_resource(UserLogout, '/logout')
+api.add_resource(CreatePosition, '/createposition')
+api.add_resource(CreateJob, '/createjob')
+api.add_resource(FindJob, '/findjob')
 
 from db import db
 db.init_app(app)
