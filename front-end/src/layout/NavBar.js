@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import {Nav,Navbar, Form, FormControl, Button} from 'react-bootstrap';
+import {Nav,Navbar} from 'react-bootstrap';
 import '../App.css';
-import {withRouter,Redirect} from 'react-router-dom';
+import {withRouter} from 'react-router-dom';
 
 export class NavBar extends Component {
 

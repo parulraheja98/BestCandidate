@@ -12,6 +12,15 @@ code {
     monospace;
 }
 
+body{
+  background: #f4f4f4;
+}
+
+.form-control{
+  width: 50%;
+  margin-bottom: 10px;
+}
+
 .text-body{
   margin-left: 50px;
   margin-right: 300px;

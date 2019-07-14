@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import {Switch,Route} from 'react-router';
 import {BrowserRouter} from 'react-router-dom';
-import logo from './logo.svg';
 import './App.css';
 import { NavBar } from './layout/NavBar';
 import About from './layout/About';
+import Login from './layout/Login';
 
 class App extends Component {
   render() {
@@ -13,8 +13,7 @@ class App extends Component {
       <div>
         <NavBar />
         <Switch>
-          {/* <Route exact path='/' component={Login} />
-          <Route exact path='/Register' component={Register} /> */}
+          <Route exact path='/' component={Login}/>
         </Switch>
         <Route path="/about" component={About}/>
         </div>
