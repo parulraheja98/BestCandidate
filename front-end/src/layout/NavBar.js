@@ -39,7 +39,7 @@ export class NavBar extends Component {
 
                         {this.state.loggedIn ?
                         <Nav.Link onClick={this.logout}> Logout </Nav.Link>
-                        : <Nav.Link onClick={this.login}> Login </Nav.Link>}
+                        : <Nav.Link href="/login"> Login </Nav.Link>}
 
                         {this.state.loggedIn ?
                         null

@@ -5,6 +5,7 @@ import './App.css';
 import { NavBar } from './layout/NavBar';
 import About from './layout/About';
 import Login from './layout/Login';
+import Register from './layout/Register';
 
 class App extends Component {
   render() {
@@ -13,10 +14,12 @@ class App extends Component {
       <div>
         <NavBar />
         <Switch>
-          <Route exact path='/' component={Login}/>
+        <Route exact path="/about" component={About}/>
+        <Route exact path="/login" component={Login}/>
+        <Route exact path="/" component={Login}/>
+        <Route exact path="/register" component={Register}/>
         </Switch>
-        <Route path="/about" component={About}/>
-        </div>
+      </div>
       </BrowserRouter>
     );
   }
