@@ -2,6 +2,8 @@ import hashlib
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_claims, jwt_refresh_token_required, get_raw_jwt
 from models.user import UserModel
+from models.position import PositionModel
+from models.job import JobModel
 from blacklist import BLACKLIST
 
 
@@ -104,3 +106,4 @@ class UserLogout(Resource):
         return {
             'message': 'Successfully logged out'
         }, 200
+
