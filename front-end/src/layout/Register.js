@@ -13,49 +13,33 @@ export class Register extends Component {
             email:'',
             credentialsMatch:true,
             role: '',
-            successsfulRegistration: true
+            successsfulRegistration: true,
+            minLength: 3
         };
-
-        this.handleRePassword = this.handleRePassword.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleUsername = this.handleUsername.bind(this);
-        this.handlePassword = this.handlePassword.bind(this);
-        this.handleEmail = this.handleEmail.bind(this);
-        this.handleRole = this.handleRole.bind(this);
-    }
-    
-    handleUsername(event) {
-        event.preventDefault();
-        this.setState({username:event.target.value});
-    }
-    
-    handleEmail(event) {
-        event.preventDefault();
-        this.setState({email:event.target.value});
-    }
-    
-    handlePassword(event) {
-        event.preventDefault();
-        this.setState({password:event.target.value});
-    }
-    
-    handleRePassword(event) {
-        event.preventDefault();
-        this.setState({confPassword:event.target.value});
     }
 
-    handleRole(event){
-        event.preventDefault();
-        console.log("this is the event");
-        console.log(event);
+    validateForm(){
+        return (this.state.username.length > this.state.minInputLength &&
+            this.state.password.length > this.state.minInputLength);
     }
+    
+    handleChange = event => {
+        //console.log(event.target.id+" updating to "+event.target.value);
+        console.log("the ussername is "+this.state.username);
+        console.log("the password is "+this.state.password);
+        this.setState({
+          [event.target.id]: event.target.value
+        });
+      }
+    
 
     handleSubmit(event) {
 
         event.preventDefault();
-        
+        console.log("sending "+this.state.username+" and "+this.state.password);
 
         if(this.state.password === this.state.confPassword){
+   
             console.log("Passwords match");
 
             var registerCredentials = JSON.stringify({
@@ -96,15 +80,26 @@ export class Register extends Component {
 
     render() {
         return (
-            <div style={this.getLoginDivStyle()}>
+            <div style={this.getLoginDivStyle()} onSubmit={this.handleSubmit}>
                 <h2>Create an account</h2> 
                 <br/>
-               <Form style={this.getFormStyle()}>
-                    <Form.Control type='text' placeholder='Enter username' onChange={this.handleUsername} required/>
-                    <Form.Group controlId="formBasicPassword">
-                        <Form.Control type="password" onClick={this.handlePassword} placeholder="Password" required/>
-                        <Form.Control type='password' placeholder='Re-enter password' onChange={this.handleRePassword} required/>
+               <Form style={this.getFormStyle()}  onSubmit={this.handleSubmit}> 
+                        
+                    <Form.Group controlId="username">    
+                        <Form.Control autoFocus type='text'  value={this.state.username} placeholder='Enter username' onChange={this.handleChange} required/>
+                        <Form.Text className="text"> username must be at least {this.state.minLength} characters long.</Form.Text>
                     </Form.Group>
+
+                    <Form.Group controlId="password">
+                        <Form.Control type="password" value={this.state.password} onChange={this.handleChange} placeholder="Password" required/>
+                    </Form.Group>
+
+
+                    <Form.Group controlId="confPassword">
+                        <Form.Control type='password' value={this.confPassword}  onChange={this.handleChange} placeholder='Re-enter password' required/>
+                    </Form.Group>
+                    
+                    
                     <br/>
                     <h5>I am a: </h5>
                     <ButtonGroup toggle className="mt-2">
@@ -114,7 +109,7 @@ export class Register extends Component {
                     
                     <br/>
                     <br/>
-                    <Button variant="primary"  onClick={this.handleSubmit} type="submit">Register</Button>
+                    <Button block  variant="primary" disabled={!this.validateForm()} type="submit">Register</Button>
                 </Form>
             </div>
             
