@@ -32,6 +32,12 @@ export class Register extends Component {
         });
       }
     
+      handleRole(event) {
+          console.log('event name ', event.target.name);
+           console.log('checking event', event.target.checked);
+           console.log('checking value', event.target.value);
+           this.setState({role: event.target.value});
+      }
 
     handleSubmit(event) {
 
@@ -45,7 +51,7 @@ export class Register extends Component {
             var registerCredentials = JSON.stringify({
                 username:this.state.username,
                 password:this.state.password,
-                role:"recruiter"
+                role: this.state.role
             })
 
             fetch('http://localhost:5000/register' , {
@@ -80,10 +86,10 @@ export class Register extends Component {
 
     render() {
         return (
-            <div style={this.getLoginDivStyle()} onSubmit={this.handleSubmit}>
+            <div style={this.getLoginDivStyle()}>
                 <h2>Create an account</h2> 
                 <br/>
-               <Form style={this.getFormStyle()}  onSubmit={this.handleSubmit}> 
+               <Form style={this.getFormStyle()}> 
                         
                     <Form.Group controlId="username">    
                         <Form.Control autoFocus type='text'  value={this.state.username} placeholder='Enter username' onChange={this.handleChange} required/>
@@ -103,13 +109,13 @@ export class Register extends Component {
                     <br/>
                     <h5>I am a: </h5>
                     <ButtonGroup toggle className="mt-2">
-                        <ToggleButton type="radio" name="radio" defaultChecked value="1" onClick={this.handleRole}>Candidate</ToggleButton>
-                        <ToggleButton type="radio" name="radio" value="2" onClick={this.handleRole}>Recruiter</ToggleButton>
+                        <ToggleButton type="radio" name="radio" defaultChecked value="candidate" onChange={this.handleRole.bind(this)}>Candidate</ToggleButton>
+                        <ToggleButton type="radio" name="radio" value="recruiter" onChange={this.handleRole.bind(this)}>Recruiter</ToggleButton>
                     </ButtonGroup>
                     
                     <br/>
                     <br/>
-                    <Button block  variant="primary" disabled={!this.validateForm()} type="submit">Register</Button>
+                    <Button block  variant="primary" onClick={this.handleSubmit.bind(this)} type="submit">Register</Button>
                 </Form>
             </div>
             
