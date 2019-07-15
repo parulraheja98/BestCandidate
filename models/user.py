@@ -32,7 +32,7 @@ class UserModel(db.Model):
         return cls.query.filter_by(username=username).first()
     @classmethod
     def find_by_role(cls, role):
-        return cls.query.filter_by(role=role).first()
+        return cls.query.filter_by(role=role)
 
     @classmethod
     def find_by_id(cls, _id):

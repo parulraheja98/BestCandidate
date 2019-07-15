@@ -9,8 +9,9 @@ from resources.application import Application, CreateApplication, ApplicationByC
 from models.user import UserModel
 from blacklist import BLACKLIST
 
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///data.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = ''
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -31,8 +32,14 @@ jwt = JWTManager(app)
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
-    admin_user = UserModel.find_by_role('admin').json()['id']
-    if identity == admin_user:
+    admin_user = UserModel.find_by_role('admin')
+    list_of_admin = []
+    for user in admin_user:
+
+        if user.json()['role'] == 'admin':
+            list_of_admin.append(user.json()['id'])
+
+    if identity in list_of_admin:
         return {'is_admin': True}
     else:
         return {'is_admin': False}
