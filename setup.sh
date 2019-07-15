@@ -12,6 +12,7 @@ pip3 install flask_jwt_extended
 pip3 install flask_sqlalchemy
 pip3 install tika
 pip3 install flask_cors
+pip3 install pymysql
 echo "finished"
 echo "$ source virtual_env/bin/activate to activate the environment"
 
