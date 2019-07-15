@@ -1,7 +1,7 @@
 from models.application import ApplicationModel
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_claims, jwt_refresh_token_required, get_raw_jwt
-
+from models.job import JobModel
 
 class Application(Resource):
     def get(self, id):
@@ -17,11 +17,15 @@ class Application(Resource):
 class ApplicationByCandidate(Resource):
     def get(self, id):
         application = ApplicationModel.find_by_candidate(id)
-        pos_list_id = []
+        job_list_id = []
         for appl in application:
-            print(pos.json())
-
-        return application
+            job_list_id.append(appl.json()['job'])
+        jobs_applied = []
+        for list_of_jobs in job_list_id:
+            job_list = JobModel.find_by_id(list_of_jobs).json()
+            jobs_applied.append(job_list)
+            
+        return jobs_applied
 
 class CreateApplication(Resource):
     def post(self):
