@@ -6,7 +6,7 @@ class JobModel(db.Model):
 
     id = db.Column(db.Integer, primary_key = True)
     description = db.Column(db.String(80))
-    posted_by = db.Column(db.String(80))
+    posted_by = db.Column(db.Integer, db.ForeignKey('recruiter.id'), nullable=False)
     position = db.relationship('ApplicationModel', backref='jobmodel', lazy=True)
 
 

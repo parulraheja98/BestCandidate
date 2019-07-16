@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from resources.user import UserRegister,UserLogin, UserLogout
 from resources.skills import SkillFinder
 from resources.job import Job, CreateJob
+from resources.recruiter import Recruiter,CreateRecruiter
 from resources.application import Application, CreateApplication, ApplicationByCandidate
 from models.user import UserModel
 from blacklist import BLACKLIST
@@ -83,6 +84,8 @@ api.add_resource(SkillFinder, '/skill')
 api.add_resource(UserLogout, '/logout')
 api.add_resource(CreateJob, '/createjob')
 api.add_resource(Job, '/job/<int:id>')
+api.add_resource(Recruiter, '/recruiter/<int:id>')
+api.add_resource(CreateRecruiter, '/createrecruiter')
 api.add_resource(CreateApplication, '/createapplication')
 api.add_resource(Application, '/application/<int:id>')
 api.add_resource(ApplicationByCandidate,'/application/candidate/<int:id>')

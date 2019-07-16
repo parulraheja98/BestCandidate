@@ -6,13 +6,11 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 class Job(Resource):
     def get(self, id):
         print("id is " + str(id))
-        job = JobModel.find_by_id(id).json()
-        description = job['description']
-        posted_by = job['posted_by']
-        return {
-            'description': description,
-            'posted_by': posted_by
-        }, 200
+        job = JobModel.find_by_id(id)
+        if job != None:
+            return job.json(),200
+        else:
+            return {"error": "Job Not Found"},404
 
 class CreateJob(Resource):
     def post(self):
@@ -25,7 +23,7 @@ class CreateJob(Resource):
         )
         parser.add_argument(
             'posted_by',
-            type=str,
+            type=int,
             required=True,
             help="This field cannot be blank"
         )
