@@ -1,3 +1,4 @@
+import hashlib
 from models.recruiter import RecruiterModel
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_claims, jwt_refresh_token_required, get_raw_jwt
@@ -15,6 +16,24 @@ class CreateRecruiter(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument(
+            'username',
+            type=str,
+            required=True,
+            help="Title field is required"
+        )
+        parser.add_argument(
+            'password',
+            type=str,
+            required=True,
+            help="Title field is required"
+        )
+        parser.add_argument(
+            'name',
+            type=str,
+            required=True,
+            help="Title field is required"
+        )
+        parser.add_argument(
             'title',
             type=str,
             required=True,
@@ -27,9 +46,15 @@ class CreateRecruiter(Resource):
             help="Company field is required"
         )
         data = parser.parse_args()
+        if RecruiterModel.find_by_username(data['username']):
+            return {"message": "A user with that username already exists"}, 400
+        recruiter_username = data['username']
+
+        enc_password = hashlib.md5(data['password'].encode())
+        name = data['name']
         recruiter_title = data['title']
         recruiter_company = data['company']
 
-        recruiter = RecruiterModel(recruiter_title, recruiter_company)
+        recruiter = RecruiterModel(recruiter_username,enc_password.hexdigest(),name,recruiter_title, recruiter_company)
         recruiter.save_to_db()
         

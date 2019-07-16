@@ -6,7 +6,7 @@ from resources.user import UserRegister,UserLogin, UserLogout
 from resources.skills import SkillFinder
 from resources.job import Job, CreateJob
 from resources.recruiter import Recruiter,CreateRecruiter
-from resources.application import Application, CreateApplication, ApplicationByCandidate
+from resources.application import Application, CreateApplication, ApplicationByCandidate, ListCandidatesByJob
 from models.user import UserModel
 from blacklist import BLACKLIST
 
@@ -89,6 +89,7 @@ api.add_resource(CreateRecruiter, '/createrecruiter')
 api.add_resource(CreateApplication, '/createapplication')
 api.add_resource(Application, '/application/<int:id>')
 api.add_resource(ApplicationByCandidate,'/application/candidate/<int:id>')
+api.add_resource(ListCandidatesByJob,'/candidates/job/<int:id>')
 
 from db import db
 db.init_app(app)

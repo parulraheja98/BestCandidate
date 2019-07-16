@@ -29,3 +29,7 @@ class ApplicationModel(db.Model):
     @classmethod
     def find_by_candidate(cls, candidate):
         return cls.query.filter_by(candidate=candidate)
+    
+    @classmethod
+    def find_by_job(cls, job):
+        return cls.query.filter_by(job=job)

@@ -2,6 +2,7 @@ from models.application import ApplicationModel
 from flask_restful import Resource, reqparse
 from flask_jwt_extended import create_access_token, create_refresh_token, jwt_required, get_jwt_claims, jwt_refresh_token_required, get_raw_jwt
 from models.job import JobModel
+from models.user import UserModel
 
 class Application(Resource):
     def get(self, id):
@@ -27,12 +28,26 @@ class ApplicationByCandidate(Resource):
             
         return jobs_applied
 
+class ListCandidatesByJob(Resource):
+    def get(self, id):
+        application = ApplicationModel.find_by_job(id)
+        candidate_list_id = []
+        for appl in application:
+            candidate_list_id.append(appl.json()['candidate'])
+        candidates_applied = []
+        for id in candidate_list_id:
+            candidate = UserModel.find_by_id(id).json()
+            candidates_applied.append(candidate)
+
+        return candidates_applied
+
+
 class CreateApplication(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument(
             'job',
-            type=str,
+            type=int,
             required=True,
             help="This field cannot be blank"
         )
@@ -48,6 +63,8 @@ class CreateApplication(Resource):
 
         job = ApplicationModel(application_job, application_candidate)
         job.save_to_db()
+
+        return {'message': 'Application Created Successfully '}, 200
        
 
 
