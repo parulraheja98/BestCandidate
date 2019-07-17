@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Form, Button, Alert} from 'react-bootstrap'
 import {withCookies, Cookies} from 'react-cookie';
+import PropTypes from 'prop-types';
 
 export class Login extends Component {
 
@@ -16,6 +17,9 @@ export class Login extends Component {
             minInputLength:2
         };
     }
+
+
+   // USE PROP TYPES AND DEFAULT PROPS
 
     validateForm(){
         return (this.state.username.length > this.state.minInputLength && this.state.password.length > this.state.minInputLength);
@@ -62,7 +66,7 @@ export class Login extends Component {
     render() {
         return (
             <div style={this.getLoginDivStyle()}>
-                <h2>Welcome back</h2> 
+                <h2>Welcome back, {this.props.title}</h2> 
                 <br/>
                <Form style={this.getFormStyle()} onSubmit={this.handleSubmit}>
                     <Form.Group controlId="username">
@@ -79,6 +83,8 @@ export class Login extends Component {
             </div>
         )
     }
+
+
 
     getAlertStyle = () => {
         return {
