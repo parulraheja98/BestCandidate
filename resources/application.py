@@ -16,7 +16,10 @@ class Application(Resource):
         }, 200
 
 class ApplicationByCandidate(Resource):
+    @jwt_required
     def get(self, id):
+        claims = get_jwt_claims()
+        print(claims)
         application = ApplicationModel.find_by_candidate(id)
         job_list_id = []
         for appl in application:

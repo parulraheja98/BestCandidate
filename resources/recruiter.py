@@ -19,19 +19,25 @@ class CreateRecruiter(Resource):
             'username',
             type=str,
             required=True,
-            help="Title field is required"
+            help="Username field is required"
         )
         parser.add_argument(
             'password',
             type=str,
             required=True,
-            help="Title field is required"
+            help="Password field is required"
         )
         parser.add_argument(
-            'name',
+            'firstname',
             type=str,
             required=True,
-            help="Title field is required"
+            help="First Name field is required"
+        )
+        parser.add_argument(
+            'lastname',
+            type=str,
+            required=True,
+            help="Last Name field is required"
         )
         parser.add_argument(
             'title',
@@ -51,10 +57,15 @@ class CreateRecruiter(Resource):
         recruiter_username = data['username']
 
         enc_password = hashlib.md5(data['password'].encode())
-        name = data['name']
+        firstname = data['firstname']
+        lastname = data['lastname']
         recruiter_title = data['title']
         recruiter_company = data['company']
 
-        recruiter = RecruiterModel(recruiter_username,enc_password.hexdigest(),name,recruiter_title, recruiter_company)
+        recruiter = RecruiterModel(recruiter_username,enc_password.hexdigest(),firstname,lastname,recruiter_title, recruiter_company)
         recruiter.save_to_db()
+
+        return {
+            'message': 'Recruiter successfully created'
+        }, 200
         

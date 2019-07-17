@@ -12,7 +12,7 @@ from blacklist import BLACKLIST
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://praheja:parulraheja@35.226.222.111/praheja'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://praheja:parulraheja@35.226.222.111/praheja'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['PROPAGATE_EXCEPTIONS'] = True
 app.config['JWT_BLACKLIST_ENABLED'] = True
@@ -33,6 +33,8 @@ jwt = JWTManager(app)
 
 @jwt.user_claims_loader
 def add_claims_to_jwt(identity):
+    print('identity check')
+    print(identity)
     admin_user = UserModel.find_by_role('admin')
     list_of_admin = []
     for user in admin_user:
@@ -41,9 +43,9 @@ def add_claims_to_jwt(identity):
             list_of_admin.append(user.json()['id'])
 
     if identity in list_of_admin:
-        return {'is_admin': True}
+        return {'is_admin': True, 'identity': identity}
     else:
-        return {'is_admin': False}
+        return {'is_admin': False, 'identity': identity}
 
 @jwt.token_in_blacklist_loader
 def check_if_token_in_blacklist(decrypted_token):
