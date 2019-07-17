@@ -13,7 +13,7 @@ export class Register extends Component {
             email:'',
             credentialsMatch:true,
             role: '',
-            successsfulRegistration: true,
+            successsfulRegistration: false,
             minLength: 3
         };
     }
@@ -64,18 +64,18 @@ export class Register extends Component {
             .then(response => {
             console.log('received response');
             console.log(response);
-            if(response.ok) {
-                console.log("Successful registration");
+            if(response.message) {
+                console.log("Successful registration"); //display succesful registration alert
                 this.setState({successsfulRegistration: true});
-            }else {
-                this.setState({credentialsMatch:false});    
-                this.setState({successsfulRegistration: false})   
-            } 
+                this.props.history.push('/candidate'); //redirect to candidat page
+            }
             
             })
         }else{
             console.log(this.state.password+" match "+this.state.confPassword);
+            this.setState({credentialsMatch:false, successsfulRegistration:false}); //display credentials match alert
             console.log("Passwords do not match");
+
         }    
         
     }
@@ -90,7 +90,8 @@ export class Register extends Component {
                 <h2>Create an account</h2> 
                 <br/>
                <Form style={this.getFormStyle()}> 
-                        
+                    {this.state.credentialsMatch ?null :<Alert variant='danger'>{this.state.role} Credentials do not match.</Alert>}
+                    {this.state.successsfulRegistration ?<Alert variant='success'>{this.state.role} account created.</Alert>:null}
                     <Form.Group controlId="username">    
                         <Form.Control autoFocus type='text'  value={this.state.username} placeholder='Enter username' onChange={this.handleChange} required/>
                         <Form.Text className="text"> username must be at least {this.state.minLength} characters long.</Form.Text>
@@ -110,7 +111,7 @@ export class Register extends Component {
                     <h5>I am a: </h5>
                     <ButtonGroup toggle className="mt-2">
                         <ToggleButton type="radio" name="radio" defaultChecked value="candidate" onChange={this.handleRole.bind(this)}>Candidate</ToggleButton>
-                        <ToggleButton type="radio" name="radio" value="recruiter" onChange={this.handleRole.bind(this)}>Recruiter</ToggleButton>
+                        <ToggleButton  type="radio" name="radio" value="recruiter" onChange={this.handleRole.bind(this)}>Recruiter</ToggleButton>
                     </ButtonGroup>
                     
                     <br/>

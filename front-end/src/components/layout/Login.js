@@ -45,7 +45,14 @@ export class Login extends Component {
                 cookies.set('access_token',response.access_token,{path:'/'}); //store the received tokens
                 cookies.set('refresh_token', response.refresh_token, {path: '/'});
                 this.setState({loggedIn:true});
-                //this.props.history.push('/');
+                
+                if(this.props.title === "Candidate"){
+                    this.props.history.push('/candidate'); //redirect to candidate page
+                }else{
+                    alert("You should be redirected to the recruiter homepage");
+                    this.props.history.push('/');
+                }
+
             }else {
                 this.setState({invalidCredentials:true}); //show the notification that says invalid password
             }
