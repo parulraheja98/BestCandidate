@@ -7,6 +7,7 @@ import About from './components/layout/About';
 import Login from './components/layout/Login';
 import Register from './components/layout/Register';
 import LandingPage from './components/layout/LandingPage';
+import Candidate from './components/Candidate';
 
 class App extends Component {
   render() {
@@ -20,6 +21,7 @@ class App extends Component {
         <Route exact path="/candidate-login" render={(props) => <Login {...props} title="Candidate" />}/>
         <Route exact path="/" component={LandingPage}/>
         <Route exact path="/register" component={Register}/>
+        <Route exact path="/candidate" component={Candidate}/>
         </Switch>
       </div>
       </BrowserRouter>
