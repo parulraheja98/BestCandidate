@@ -3,7 +3,7 @@ import React from 'react'
  function About() {
     return (
         <React.Fragment>
-            <div class="text-body">
+            <div className="text-body">
             <br/>
             <h1>About</h1>
             <br/>

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {Form, Button, Alert} from 'react-bootstrap'
 import {withCookies, Cookies} from 'react-cookie';
+import PropTypes from 'prop-types';
 
 export class Login extends Component {
 
@@ -16,6 +17,9 @@ export class Login extends Component {
             minInputLength:2
         };
     }
+
+
+   // USE PROP TYPES AND DEFAULT PROPS
 
     validateForm(){
         return (this.state.username.length > this.state.minInputLength && this.state.password.length > this.state.minInputLength);
@@ -41,7 +45,14 @@ export class Login extends Component {
                 cookies.set('access_token',response.access_token,{path:'/'}); //store the received tokens
                 cookies.set('refresh_token', response.refresh_token, {path: '/'});
                 this.setState({loggedIn:true});
-                //this.props.history.push('/');
+                
+                if(this.props.title === "Candidate"){
+                    this.props.history.push('/candidate'); //redirect to candidate page
+                }else{
+                    alert("You should be redirected to the recruiter homepage");
+                    this.props.history.push('/');
+                }
+
             }else {
                 this.setState({invalidCredentials:true}); //show the notification that says invalid password
             }
@@ -62,7 +73,7 @@ export class Login extends Component {
     render() {
         return (
             <div style={this.getLoginDivStyle()}>
-                <h2>Welcome back</h2> 
+                <h2>Welcome back, {this.props.title}</h2> 
                 <br/>
                <Form style={this.getFormStyle()} onSubmit={this.handleSubmit}>
                     <Form.Group controlId="username">
@@ -79,6 +90,8 @@ export class Login extends Component {
             </div>
         )
     }
+
+
 
     getAlertStyle = () => {
         return {
