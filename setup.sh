@@ -13,6 +13,8 @@ pip3 install flask_sqlalchemy
 pip3 install tika
 pip3 install flask_cors
 pip3 install pymysql
+pip install mysqlclient
+pip3 install MySQL-python
 echo "finished"
 echo "$ source virtual_env/bin/activate to activate the environment"
 

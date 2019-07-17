@@ -1,6 +1,6 @@
 virtual_env/
 ### Front end
-/node_modules
+front-end/node_modules
 /.pnp
 .pnp.js
 
