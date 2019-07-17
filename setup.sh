@@ -17,4 +17,5 @@ pip install mysqlclient
 pip3 install MySQL-python
 echo "finished"
 echo "$ source virtual_env/bin/activate to activate the environment"
+echo "to run the app enter: $FLASK_APP=app.py flask run"
 
