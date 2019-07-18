@@ -33,3 +33,11 @@ class ApplicationModel(db.Model):
     @classmethod
     def find_by_job(cls, job):
         return cls.query.filter_by(job=job)
+
+    @classmethod
+    def find_by_job_and_candidate(cls, job, candidate):
+        return cls.query.filter_by(job=job,candidate=candidate).first()
+    
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()

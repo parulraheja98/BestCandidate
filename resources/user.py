@@ -41,6 +41,28 @@ class UserRegister(Resource):
         return {"message": "User created successfully."}, 201
 
 
+class JobsAppliedByCandidate(Resource):
+    @jwt_required
+    def get(self, id):
+        claims = get_jwt_claims()
+        print(claims)
+        if claims['identity'] == id:
+            application = ApplicationModel.find_by_candidate(id)
+            job_list_id = []
+            for appl in application:
+                job_list_id.append(appl.json()['job'])
+            jobs_applied = []
+            for list_of_jobs in job_list_id:
+                job_list = JobModel.find_by_id(list_of_jobs).json()
+                jobs_applied.append(job_list)
+                
+            return jobs_applied
+        else:
+            return {
+                'message': 'Unauthorized Access',
+                'error': 'authorization_required'
+            }, 401
+
 class UserLogin(Resource):
     parser = reqparse.RequestParser()
     parser.add_argument(
@@ -71,16 +93,16 @@ class UserLogin(Resource):
     def post(self):
         data = UserLogin.parser.parse_args()
         user_exist = UserModel.find_by_username(data['username'])
-        print(user_exist.json()['id'])
-        user_id = user_exist.json()['id']
         if user_exist:
-            password = user_exist.json()['password']  
+            user_id = user_exist.json()['id']
+            password = user_exist.password  
             print(password)
             enc_password = hashlib.md5(data['password'].encode())
             if password == enc_password.hexdigest():
                 access_token = create_access_token(identity=user_id, fresh=True)
                 refresh_token = create_refresh_token(user_id)
                 return {
+                    'id': user_id,
                     'access_token': access_token,
                     'refresh_token': refresh_token
                 }, 200

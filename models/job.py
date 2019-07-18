@@ -27,8 +27,13 @@ class JobModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
             'description': self.description,
-            'posted_by': self.posted_by
+            'posted_by': self.posted_by,
+            'status': self.status,
+            'date_posted': self.date_posted,
+            'title': self.title,
+            'deadline': self.deadline
         }
 
     def save_to_db(self):
@@ -38,3 +43,17 @@ class JobModel(db.Model):
     @classmethod
     def find_by_id(cls, _id):
         return cls.query.filter_by(id = _id).first()
+
+    @classmethod
+    def find_by_posted_by(cls,_id):
+        return cls.query.filter_by(posted_by=_id)
+
+    @classmethod
+    def find_by_posted_by_and_title(cls,posted_by,title):
+        return cls.query.filter_by(posted_by=posted_by, title=title).first()
+
+
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()

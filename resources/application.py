@@ -15,6 +15,16 @@ class Application(Resource):
             'candidate': candidate
         }, 200
 
+class ListApplications(Resource):
+    def get(self):
+        applications = ApplicationModel.find_all()
+        print(type(applications))
+        list_of_applications = []
+        for application in applications:
+            list_of_applications.append(application.json())
+
+        return list_of_applications
+
 class ApplicationByCandidate(Resource):
     @jwt_required
     def get(self, id):
@@ -63,6 +73,11 @@ class CreateApplication(Resource):
         data = parser.parse_args()
         application_job = data['job']
         application_candidate = data['user']
+        find_if_application_exists = ApplicationModel.find_by_job_and_candidate(application_job, application_candidate)
+        if find_if_application_exists:
+            return {
+                'message': 'Application Already exists with the job and the candidate'
+            }, 400
 
         job = ApplicationModel(application_job, application_candidate)
         job.save_to_db()

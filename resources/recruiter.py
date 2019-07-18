@@ -12,6 +12,49 @@ class Recruiter(Resource):
         else:
             return {"error": "Recruiter Not Found"},404
 
+class ListRecruiters(Resource):
+    def get(self, id):
+        recruiters = RecruiterModel.find_all()
+        return recruiters
+
+class RecruiterLogin(Resource):
+    parser = reqparse.RequestParser()
+    parser.add_argument(
+        'username',
+        type=str,
+        required=True,
+        help="This field cannot be blank"
+
+    )
+    parser.add_argument(
+        'password',
+        type=str,
+        required=True,
+        help="This field cannot be blank"
+    )
+    
+    def post(self):
+        data = RecruiterLogin.parser.parse_args()
+        recruiter_exist = RecruiterModel.find_by_username(data['username'])
+        if recruiter_exist:
+            recruiter_id = recruiter_exist.json()['id']
+            password = recruiter_exist.password 
+            print(password)
+            enc_password = hashlib.md5(data['password'].encode())
+            if password == enc_password.hexdigest():
+                access_token = create_access_token(identity=recruiter_id, fresh=True)
+                refresh_token = create_refresh_token(recruiter_id)
+                return {
+                    'access_token': access_token,
+                    'refresh_token': refresh_token
+                }, 200
+
+    
+            else:
+                return "Unsuccesfull",403
+        else:
+            return "User not found",404
+
 class CreateRecruiter(Resource):
     def post(self):
         parser = reqparse.RequestParser()

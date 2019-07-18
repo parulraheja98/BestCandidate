@@ -2,11 +2,11 @@ from flask import Flask, jsonify
 from flask_restful import Api
 from flask_cors import CORS
 from flask_jwt_extended import JWTManager
-from resources.user import UserRegister,UserLogin, UserLogout
+from resources.user import UserRegister,UserLogin, UserLogout, JobsAppliedByCandidate
 from resources.skills import SkillFinder
-from resources.job import Job, CreateJob
-from resources.recruiter import Recruiter,CreateRecruiter
-from resources.application import Application, CreateApplication, ApplicationByCandidate, ListCandidatesByJob
+from resources.job import Job, CreateJob, CandidatesByJob, ListJobs
+from resources.recruiter import Recruiter,CreateRecruiter, RecruiterLogin, ListRecruiters
+from resources.application import Application, CreateApplication, ListApplications, ApplicationByCandidate, ListCandidatesByJob
 from models.user import UserModel
 from blacklist import BLACKLIST
 
@@ -52,28 +52,28 @@ def check_if_token_in_blacklist(decrypted_token):
     return decrypted_token['jti'] in BLACKLIST
 
 @jwt.expired_token_loader
-def expired_token_callback():
+def expired_token_callback(error):
     return jsonify({
         'message': 'This token has expired',
         'error': 'invalid_token'
     }), 401
 
 @jwt.unauthorized_loader
-def missing_token_callback():
+def missing_token_callback(error):
     return jsonify({
         'message': 'Request doesnot contain access token',
         'error': 'authorization_required'
     }), 401
 
 @jwt.needs_fresh_token_loader
-def token_not_fresh_callback():
+def token_not_fresh_callback(error):
     return jsonify({
         'description': 'the token is not fresh',
         'error': 'fresh_token_required'
     }), 401
 
 @jwt.revoked_token_loader
-def revoked_token_callback():
+def revoked_token_callback(error):
     return jsonify({
         'description': 'The token has been revoked',
         'error': 'token_revoked'
@@ -82,16 +82,20 @@ def revoked_token_callback():
 
 api.add_resource(UserRegister, '/register')
 api.add_resource(UserLogin, '/login')
+api.add_resource(RecruiterLogin, '/recruiters/login')
 api.add_resource(SkillFinder, '/skill')
 api.add_resource(UserLogout, '/logout')
-api.add_resource(CreateJob, '/createjob')
-api.add_resource(Job, '/job/<int:id>')
-api.add_resource(Recruiter, '/recruiter/<int:id>')
-api.add_resource(CreateRecruiter, '/createrecruiter')
-api.add_resource(CreateApplication, '/createapplication')
-api.add_resource(Application, '/application/<int:id>')
-api.add_resource(ApplicationByCandidate,'/application/candidate/<int:id>')
-api.add_resource(ListCandidatesByJob,'/candidates/job/<int:id>')
+api.add_resource(Job, '/jobs/<int:id>')
+api.add_resource(ListJobs,'/jobs')
+api.add_resource(CreateJob,'/jobs')
+api.add_resource(Recruiter, '/recruiters/<int:id>')
+api.add_resource(CreateRecruiter,'/recruiters')
+api.add_resource(ListRecruiters,'/recruiters')
+api.add_resource(CreateApplication,'/applications')
+api.add_resource(ListApplications,'/applications')
+api.add_resource(Application, '/applications/<int:id>')
+api.add_resource(JobsAppliedByCandidate,'/candidates/<int:id>/jobs')
+api.add_resource(CandidatesByJob,'/jobs/<int:id>/candidates')
 
 from db import db
 db.init_app(app)

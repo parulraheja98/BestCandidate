@@ -23,6 +23,9 @@ class RecruiterModel(db.Model):
 
     def json(self):
         return {
+            'id': self.id,
+            'firstname': self.firstname,
+            'lastname': self.lastname,
             'title': self.title,
             'company': self.company
         }
@@ -38,3 +41,7 @@ class RecruiterModel(db.Model):
     @classmethod
     def find_by_username(cls, username):
         return cls.query.filter_by(username = username).first()
+
+    @classmethod
+    def find_all(cls):
+        return cls.query.all()
