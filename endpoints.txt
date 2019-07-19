@@ -1,0 +1,21 @@
+1. Route /recruiters 
+Description: Create Recruiter
+curl http://localhost:5000/recruiters -d "username=selena" -d "password=gomez" -d "firstname=selena" -d "lastname=selena" -d "title=HR Coordinator" -d "company=Sage"
+
+2. Route /candidates/<int:id>/jobs 
+Description: Get Jobs Applied By Candidate with given ID of user
+curl http://localhost:5000/candidates/15/jobs -H "Authorization:Bearer <add-your-token-here" 
+
+3. Route /recruiters/<int:id> 
+Description: Get Recruiter By ID
+curl http://localhost:5000/recruiters/1 -H "Authorization:Bearer <your-token-goes-here>"
+
+4.Route /applications 
+Description: Create New Application with job ID and user ID 
+curl http://localhost:5000/applications -d "job=6" -d "user=18"
+
+5. Route /jobs/<int:id>/candidate 
+Description: Get The Candidates that applied to the job
+curl http://localhost:5000/jobs/1/candidate -H "Authorization:Bearer <your-token-goes-here" 
+
+
