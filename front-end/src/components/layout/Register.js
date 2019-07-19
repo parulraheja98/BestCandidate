@@ -90,7 +90,7 @@ export class Register extends Component {
                 <h2>Create an account</h2> 
                 <br/>
                <Form style={this.getFormStyle()}> 
-                    {this.state.credentialsMatch ?null :<Alert variant='danger'>{this.state.role} Credentials do not match.</Alert>}
+                    {this.state.credentialsMatch ?null :<Alert variant='danger'>{this.state.role} credentials do not match.</Alert>}
                     {this.state.successsfulRegistration ?<Alert variant='success'>{this.state.role} account created.</Alert>:null}
                     <Form.Group controlId="username">    
                         <Form.Control autoFocus type='text'  value={this.state.username} placeholder='Enter username' onChange={this.handleChange} required/>
