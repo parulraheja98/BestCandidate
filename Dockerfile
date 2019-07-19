@@ -10,10 +10,11 @@ WORKDIR /counter_app
 ADD . .
 
 # pip install the local requirements.txt
-RUN pip install -r requirements.txt
+RUN pip3 install -r requirements.txt
+
 
 # Listen to port 5000 at runtime
 EXPOSE 5000
 
 # Define our command to be run when launching the container
-CMD ["python", "manage.py", "runserver"]
+CMD ["python", "app.py", "runserver"]
