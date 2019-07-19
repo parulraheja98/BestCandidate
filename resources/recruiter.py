@@ -5,12 +5,18 @@ from flask_jwt_extended import create_access_token, create_refresh_token, jwt_re
 
 
 class Recruiter(Resource):
+    @jwt_required
     def get(self, id):
-        recruiter = RecruiterModel.find_by_id(id)
-        if recruiter != None:
-            return recruiter.json(),200
+        claims = get_jwt_claims()
+        id_recruiter = claims['identity']
+        if id_recruiter == id:
+            recruiter = RecruiterModel.find_by_id(id)
+            if recruiter != None:
+                return recruiter.json(),200
+            else:
+                return {"error": "Recruiter Not Found"}, 404
         else:
-            return {"error": "Recruiter Not Found"},404
+            return {"error": "Unauthorized Access"}, 403
 
 class ListRecruiters(Resource):
     def get(self, id):

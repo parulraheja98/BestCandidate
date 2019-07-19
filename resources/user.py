@@ -5,6 +5,7 @@ from models.user import UserModel
 from models.application import ApplicationModel
 from models.job import JobModel
 from blacklist import BLACKLIST
+import json
 
 
 class UserRegister(Resource):
@@ -53,8 +54,8 @@ class JobsAppliedByCandidate(Resource):
                 job_list_id.append(appl.json()['job'])
             jobs_applied = []
             for list_of_jobs in job_list_id:
-                job_list = JobModel.find_by_id(list_of_jobs).json()
-                jobs_applied.append(job_list)
+                job_list = json.dumps(JobModel.find_by_id(list_of_jobs).json(), indent=1, sort_keys=True, default=str)
+                jobs_applied.append(json.loads(job_list))
                 
             return jobs_applied
         else:
