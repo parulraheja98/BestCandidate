@@ -5,12 +5,16 @@ class UserModel(db.Model):
     __tablename__ = 'users'
 
     id = db.Column(db.Integer, primary_key=True)
+    firstname = db.Column(db.String(80))
+    lastname = db.Column(db.String(80))
     username = db.Column(db.String(80))
     password = db.Column(db.String(80))
     role = db.Column(db.String(80))
     application = db.relationship('ApplicationModel', backref='usermodel', lazy=True) 
 
-    def __init__(self, username, password, role):
+    def __init__(self, firstname, lastname, username, password, role):
+        self.firstname = firstname
+        self.lastname = lastname
         self.username = username
         self.password = password
         self.role = role
@@ -19,7 +23,9 @@ class UserModel(db.Model):
         return {
             'id': self.id,
             'username': self.username,
-            'role': self.role
+            'role': self.role,
+            'firstname': self.firstname,
+            'lastname': self.lastname
         }
 
     def save_to_db(self):

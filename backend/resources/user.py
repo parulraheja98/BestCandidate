@@ -20,6 +20,16 @@ class UserRegister(Resource):
                         required=True,
                         help="This field cannot be blank."
                         )
+    parser.add_argument('firstname',
+                    type=str,
+                    required=True,
+                    help="This field cannot be blank."
+                    )
+    parser.add_argument('lastname',
+                    type=str,
+                    required=True,
+                    help="This field cannot be blank."
+                    )
     parser.add_argument('role',
                         type=str,
                         required=True,
@@ -36,7 +46,7 @@ class UserRegister(Resource):
 
         print(data)
         enc_password = hashlib.md5(data['password'].encode())
-        user = UserModel(data['username'], enc_password.hexdigest(),  data['role'])
+        user = UserModel(data['firstname'], data['lastname'],data['username'], enc_password.hexdigest(),  data['role'])
         user.save_to_db()
 
         return {"message": "User created successfully."}, 201
