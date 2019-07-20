@@ -2,5 +2,7 @@ Flask-JWT-Extended
 Flask-RESTful
 Flask-SQLAlchemy
 Flask-Cors
+pymysql
+mysqlclient
 tika
 
