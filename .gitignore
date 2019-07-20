@@ -12,7 +12,7 @@ front-end/node_modules
 
 # pycache
 
-__pycache__
+backend/__pycache__
 
 # misc
 .DS_Store
