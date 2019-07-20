@@ -10,6 +10,10 @@ front-end/node_modules
 # production
 /build
 
+# pycache
+
+__pycache__
+
 # misc
 .DS_Store
 .env.local
