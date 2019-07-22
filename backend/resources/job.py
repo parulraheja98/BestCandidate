@@ -107,5 +107,5 @@ class CreateJob(Resource):
         job = JobModel(job_title, job_description, job_posted_by, job_status, job_posting_date, job_deadline)
         job.save_to_db()
         return {
-            'message': 'Job successfully created '
+            'message': 'Job successfully created'
         }, 200
