@@ -82,7 +82,7 @@ class CreateApplication(Resource):
         job = ApplicationModel(application_job, application_candidate)
         job.save_to_db()
 
-        return {'message': 'Application Created Successfully '}, 200
+        return {'message': 'Application Created Successfully'}, 200
        
 
 

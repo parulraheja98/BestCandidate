@@ -49,7 +49,7 @@ class UserRegister(Resource):
         user = UserModel(data['firstname'], data['lastname'],data['username'], enc_password.hexdigest(),  data['role'])
         user.save_to_db()
 
-        return {"message": "User created successfully."}, 201
+        return {"message": "User created successfully."}, 200
 
 
 class JobsAppliedByCandidate(Resource):
@@ -117,12 +117,14 @@ class UserLogin(Resource):
                     'access_token': access_token,
                     'refresh_token': refresh_token
                 }, 200
-
-    
             else:
-                return "Unsuccesfull",403
+                return {
+                    'error': 'Unauthorized'
+                }, 403
         else:
-            return "User not found",404
+             return {
+                    'error': 'User not found'
+                }, 403
 
 class TokenRefresh(Resource):
     @jwt_refresh_token_required
