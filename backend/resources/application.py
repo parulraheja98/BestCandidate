@@ -6,14 +6,18 @@ from models.user import UserModel
 
 class Application(Resource):
     def get(self, id):
-        application = ApplicationModel.find_by_id(id).json()
-        print(application)
-        job = application['job']
-        candidate = application['candidate']
-        return {
-            'job': job,
-            'candidate': candidate
-        }, 200
+        application = ApplicationModel.find_by_id(id)
+        if application is not None:
+            job = application.json()['job']
+            candidate = application.json()['candidate']
+            return {
+                'job': job,
+                'candidate': candidate
+            }, 200
+        else:
+            return {
+                'error': 'Application with that id doesnot exist'
+            }, 404
 
 class ListApplications(Resource):
     def get(self):

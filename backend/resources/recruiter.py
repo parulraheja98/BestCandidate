@@ -19,9 +19,12 @@ class Recruiter(Resource):
             return {"error": "Unauthorized Access"}, 403
 
 class ListRecruiters(Resource):
-    def get(self, id):
+    def get(self):
         recruiters = RecruiterModel.find_all()
-        return recruiters
+        list_of_recruiters = []
+        for recruiter in recruiters:
+            list_of_recruiters.append(recruiter.json())
+        return list_of_recruiters
 
 class RecruiterLogin(Resource):
     parser = reqparse.RequestParser()
