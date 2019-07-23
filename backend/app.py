@@ -80,8 +80,8 @@ def revoked_token_callback(error):
     }), 401
 
 
-api.add_resource(UserRegister, '/register')
-api.add_resource(UserLogin, '/login')
+api.add_resource(UserRegister, '/candidates')
+api.add_resource(UserLogin, '/candidates/login')
 api.add_resource(RecruiterLogin, '/recruiters/login')
 api.add_resource(SkillFinder, '/skill')
 api.add_resource(UserLogout, '/logout')
