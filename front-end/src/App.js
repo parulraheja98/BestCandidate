@@ -10,6 +10,13 @@ import LandingPage from './components/layout/LandingPage';
 import Candidate from './components/Candidate';
 
 class App extends Component {
+
+
+  state = {
+    role : "",
+    loggedIn : false
+  }
+
   render() {
     return (
       <BrowserRouter>
