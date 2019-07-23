@@ -37,21 +37,25 @@ export class Register extends Component {
     }
 
     verifyState = () => {
-        if(this.state.role == "candidate"){
-            if(typeof this.state.username !== 'undefined' && typeof this.state.firstname !== 'undefined'
-                    && typeof this.state.lastname !== 'undefined'){
-                        console.log("all fields for candidate filled");
-                        return true;
-            }
-        }else if(this.state.role === "recruiter"){
-            if(typeof this.state.username !== 'undefined' && typeof this.state.firstname !== 'undefined'
-                    && typeof this.state.lastname !== 'undefined' && typeof this.state.title !== 'undefined'
-                    && typeof this.state.company !== 'undefined'){
-                        console.log("all fields for recruiter filled");
-                        return true;
-            }
-        }
-        return false;
+
+        // if(this.state.role == "candidate"){
+        //     if(this.state.password.length >= this.state.length && typeof this.state.confPassword.length >= this.state.minLength &&
+        //     typeof this.state.username !== 'undefined' && typeof this.state.firstname !== 'undefined'
+        //             && typeof this.state.lastname !== 'undefined'){
+        //                 console.log("all fields for candidate filled");
+        //                 return true;
+        //     }
+        // }
+        // else if(this.state.role == "recruiter"){
+        //     if(this.state.password.length >= this.state.length && this.state.confPassword.length >= this.state.minLength &&
+        //     typeof this.state.username !== 'undefined' && typeof this.state.firstname !== 'undefined'
+        //             && typeof this.state.lastname !== 'undefined' && typeof this.state.title !== 'undefined'
+        //             && typeof this.state.company !== 'undefined'){
+        //                 console.log("all fields for recruiter filled");
+        //                 return true;
+        //     }
+        // }
+        return true;
     }
 
     
@@ -107,10 +111,12 @@ export class Register extends Component {
                     .then(response => response.json())
                     .then(response => {
                     console.log('Received response');
+                    console.log("status is ",response.status);
                     console.log(response);
-                    if(response.ok) {
-                        console.log("Successful registration"); //display succesful registration alert
+                    if(response.message === "User created successfully." || response.message === "Recruiter successfully created") {
+                        console.log("Successful registration!!"); //display succesful registration alert
                         this.setState({successsfulRegistration: true});
+                        alert("Account created successfully");
                     
                         //redirect to the appropiate login page
                         if(this.state.role === "recruiter"){
@@ -146,7 +152,7 @@ export class Register extends Component {
                 <br/>
                <Form style={this.getFormStyle()}> 
                     {this.state.credentialsMatch ? null :<Alert variant='danger'>{this.state.role} credentials do not match.</Alert>}
-                    {this.state.allFieldsComplete ? null :<Alert variant='warning'>Please enter all fields..</Alert>}
+                    {this.state.allFieldsComplete ? null :<Alert variant='warning'>Please enter all fields.</Alert>}
                     {this.state.successsfulRegistration ?<Alert variant='success'>{this.state.role} account created.</Alert>:null}                   
                     <Form.Group controlId="firstname">    
                         <Form.Control autoFocus type='text'  value={this.state.firstname} placeholder='first name' onChange={this.handleChange} required/>

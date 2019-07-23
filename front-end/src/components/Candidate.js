@@ -13,19 +13,6 @@ export class Candidate extends Component {
     }
     
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
     render() {
         return (
             <div>
